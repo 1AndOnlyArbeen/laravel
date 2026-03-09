@@ -1,6 +1,20 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PageController;
+
+
+Route ::get ('/homepage',[PageController::class ,'showHome'])-> name ("home");
+Route ::get ('/userspage',[PageController::class ,'showUsers'])->name ("users");
+
+
+
+
+
+
+
+
+
 
 
 

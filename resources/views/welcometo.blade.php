@@ -31,4 +31,17 @@
           @include('pages/footer')
           @includeIf('hello/hahah')
 
+
+          @php
+              $myFruitsName = ['apple', 'banana', 'litchi', 'coconut', 'cucumber'];
+          @endphp
+          <script>
+              let myDate = @json($myFruitsName)
+
+              myDate.forEach(element => {
+                console.log(element)
+                
+              });
+          </script>
+
       </div>
