@@ -144,7 +144,7 @@ Route:: get ('/thirddddd', function (){
 });
 
 Route:: fallback(function(){
-    return "<h2> Page Not Found !!</h2>";
+    return view('fallback');
 });
 
 
