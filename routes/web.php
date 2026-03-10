@@ -14,11 +14,6 @@ Route ::get ('/userspage',[PageController::class ,'showUsers'])->name ("users");
 
 
 
-
-
-
-
-
 Route:: get ('/', function (){
     return view ('welcome');
 })->name('home');
