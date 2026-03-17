@@ -144,4 +144,73 @@ class UserController extends Controller
         $req->session()->regenerateToken(); 
         return redirect('/login')->with('success', 'You have been logged out successfully!');
     }
+
+    // for api testing 
+
+    public function loginUserApi(Request $req)
+    {
+        try {
+            $validation = $req->validate([
+                'email' => 'required|email',
+                'password' => 'required|min:8',
+            ]);
+
+            $user = User::where('email', $validation['email'])->first();
+
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Email not found'
+                ], 404);
+            }
+
+            if (!Hash::check($validation['password'], $user->password)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Incorrect password'
+                ], 401);
+            }
+
+            Auth::login($user);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Login successful! Welcome back, ' . $user->name,
+                'user'    => $user
+            ], 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors'  => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+                'error'   => $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+    // for logout api
+
+    public function logoutApi(Request $req){
+        try {
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'You have been logged out successfully!'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+                'error'   => $e->getMessage()
+            ], 500);
+        }
+
+
+    }
 }

@@ -12,9 +12,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->validateCsrfTokens(except: [
-            '/register',
-        ]);
+        $middleware->redirectUsersTo('/welcome'); 
+
+        // $middleware->validateCsrfTokens(except: [
+        //     '/register',
+        // ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
