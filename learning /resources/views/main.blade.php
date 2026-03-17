@@ -7,14 +7,21 @@
     <title>Document</title>
 </head>
 <body>
-  
-<form action="{{ route('logout') }}" method="POST">
-    @csrf
-    <button type="submit">Logout</button>
-</form>
+    <header>
+      <nav>
+        <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
 
 
-    <h3> Welcome </h3>
+      </nav>
+        
+
+    </header>
+    
     
 </body>
 </html>

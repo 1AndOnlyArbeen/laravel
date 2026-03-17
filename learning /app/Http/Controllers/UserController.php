@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -14,16 +15,21 @@ class UserController extends Controller
         return view('register');
     }
 
-   
+    public function login()
+    {
+        return view('login');
+    }
 
 
-    
+
+
+
     // For WEB (browser form) - redirects
     public function registerUser(Request $req)
     {
         $validation = $req->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email|unique:users,email|lowercase',
             'password' => 'required|min:8',
             'confirm_password' => 'required|same:password',
             'phone' => 'required|numeric|digits:10',
@@ -51,7 +57,7 @@ class UserController extends Controller
         try {
             $validation = $req->validate([
                 'name'             => 'required',
-                'email'            => 'required|email|unique:users,email',
+                'email'            => 'required|email|unique:users,email|lowercase',
                 'password'         => 'required|min:8',
                 'confirm_password' => 'required|same:password',
                 'phone'            => 'required|numeric|digits:10',
@@ -90,5 +96,52 @@ class UserController extends Controller
                 'error'   => $e->getMessage()
             ], 500);
         }
+    }
+
+
+    /* Making Login User 
+     i have to see if the user enter the email or not ?
+     then i have to check if the email exist in the database of not ?
+     then i have to see if the user enter the password or not ?
+     then i have to has the password the user given , 
+     then i have to check if the hased password mathed the password hased in the database or not
+     then i have to redirect the user to the welcome page if all good 
+     if not i have to send the user a proper error message    
+    
+    
+    */
+
+    public function loginUser(Request $req)
+    {
+
+        $validation = $req->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:8',
+        ]);
+
+        $user = User::where('email', $validation['email'])->first();
+
+        if (!$user) {
+            return back()->withErrors(['email' => 'Email not found'])->withInput();
+        }
+
+        if (!Hash::check($validation['password'], $user->password)) {
+            return back()->withErrors(['password' => 'Incorrect password'])->withInput();
+        }
+
+        Auth::login($user);
+
+        return redirect('/welcome')->with('success', 'Login successful! Welcome back, ' . $user->name);
+    }
+
+
+    /* making logout user */
+
+    public function logout(Request $req)
+    {
+        Auth::logout();
+        $req->session()->invalidate();     
+        $req->session()->regenerateToken(); 
+        return redirect('/login')->with('success', 'You have been logged out successfully!');
     }
 }
