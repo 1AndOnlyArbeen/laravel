@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\fileUploadController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserController2;
@@ -8,6 +9,7 @@ use App\Http\Controllers\UserController2;
 Route::get('/', function () {
     return view('login');
 });
+
 Route::get('/welcome', function () {
     return view('welcome');
 })->middleware('auth');
@@ -16,6 +18,14 @@ Route::get('/welcome', function () {
 Route::get('/main', function () {
     return view('main');
 })->name('main');
+
+
+
+Route::get('/fileupload', function () {
+    return view('fileupload');
+})->name('fileupload');
+
+    
 
 
 
@@ -39,3 +49,6 @@ Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 Route::resource('users', UserController2::class);
 
 
+//file uplodading 
+
+Route::resource('fileupload', fileUploadController::class)->middleware('auth');

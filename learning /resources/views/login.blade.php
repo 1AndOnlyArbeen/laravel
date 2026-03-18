@@ -24,7 +24,7 @@
                 
 
                 <h1 class="text-4xl font-bold text-gray-900 mb-2">Welcome Back</h1>
-                <p class="text-gray-600">Login to your account</p>
+                <p class="text-gray-600">Login to your account</p> 
             </div>
 
 

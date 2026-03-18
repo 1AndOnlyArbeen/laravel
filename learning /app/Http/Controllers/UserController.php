@@ -9,14 +9,21 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    // here add arbin
     // Show the form
     public function showregisterUser()
     {
+        if (Auth::check()) {
+            return redirect('/welcome')->with('success', 'You are already logged in!');
+        }
         return view('register');
     }
 
     public function login()
     {
+        if (Auth::check()) {
+            return redirect('/welcome')->with('success', 'You are already logged in!');
+        }
         return view('login');
     }
 
@@ -130,6 +137,8 @@ class UserController extends Controller
         }
 
         Auth::login($user);
+   
+    
 
         return redirect('/welcome')->with('success', 'Login successful! Welcome back, ' . $user->name);
     }
