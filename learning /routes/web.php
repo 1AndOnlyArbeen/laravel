@@ -52,3 +52,9 @@ Route::resource('users', UserController2::class);
 //file uplodading 
 
 Route::resource('fileupload', fileUploadController::class)->middleware('auth');
+
+
+
+
+// for fallback 
+Route::fallback([UserController::class,'fallback'])->name('fallback');

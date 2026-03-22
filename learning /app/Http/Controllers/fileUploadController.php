@@ -15,8 +15,8 @@ class fileUploadController extends Controller
     /**
      * Display a listing of the resource.
      */
-    //show the image to the users in the view after uploading into the csulsudoudinary
-
+    //show the image to the users in the view after uploading into the cloudinary
+    
         public function index (){
             if(Auth::check()){
                 $images = FileUpload::all();

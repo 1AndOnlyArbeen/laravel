@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    // here add arbin
     // Show the form
     public function showregisterUser()
     {
@@ -137,6 +136,7 @@ class UserController extends Controller
         }
 
         Auth::login($user);
+          $req->session()->regenerate(); // this will help me to regenerate the session token after login 
    
     
 
@@ -154,6 +154,8 @@ class UserController extends Controller
         return redirect('/login')->with('success', 'You have been logged out successfully!');
     }
 
+
+    
     // for api testing 
 
     public function loginUserApi(Request $req)
@@ -181,6 +183,7 @@ class UserController extends Controller
             }
 
             Auth::login($user);
+            $req->session()->regenerate(); // this will help me to regenerate the session token after login 
 
             return response()->json([
                 'success' => true,
@@ -222,4 +225,25 @@ class UserController extends Controller
 
 
     }
+
+
+    // fallback function for web response
+
+    public function fallback(Request $req){
+        if($req->expectsJson()){
+            return response()->json([
+                "success" => false,
+                "message" => "The requested resource was not found on this server."
+            ], 404);
+        }
+        return view('fallback');
+    }
+
+    //fallback function for api response 
+    // public function fallbackApi(){
+    //     return response()->json([
+    //         "success" => false,
+    //         "message" => "The requested resource was not found on this server."
+    //     ]);
+    // }
 }
